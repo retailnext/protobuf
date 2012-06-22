@@ -5,12 +5,12 @@
     "Matthias Ernst": "mernst@google.com"
   },
   "main": "./build/Release/protobuf_for_node",
-  "engines": { "node": ">= 0.6.0 < 0.7.0" },
+  "engines": { "node": "0.6.x || 0.7.x" },
   "repository": {
     "type": "git",
     "url": "git://github.com/chrisdew/protobuf.git"
   },
-  "scripts": { 
+  "scripts": {
     "install": "PROTOBUF=/usr/local/lib node-waf configure clean build",
     "test": "node test/unittest.js"
   }
