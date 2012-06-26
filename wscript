@@ -28,6 +28,10 @@ def configure(conf):
 
   conf.env.append_value('CCFLAGS', ['-O3'])
   conf.env.append_value('CXXFLAGS', ['-O3'])
+
+  conf.env.append_value('CCFLAGS', ['-DNODE_WANT_INTERNALS=0'])
+  conf.env.append_value('CXXFLAGS', ['-DNODE_WANT_INTERNALS=0'])
+
   if Options.platform == 'darwin': conf.env.append_value('LINKFLAGS', ['-undefined', 'dynamic_lookup'])
   conf.env.append_value("CPPPATH_PROTOBUF", "%s/include"%(os.environ['PROTOBUF']))
   conf.env.append_value("LIBPATH_PROTOBUF", "%s/lib"%(os.environ['PROTOBUF']))

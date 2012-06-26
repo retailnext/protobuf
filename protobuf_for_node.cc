@@ -559,7 +559,9 @@ namespace protobuf_for_node {
         eio_custom(&AsyncInvocation::Run,
                    EIO_PRI_DEFAULT,
                    &AsyncInvocation::Returned,
-                   static_cast<void*>(new AsyncInvocation(service, method, request, response, response_type, cb)));
+                   static_cast<void*>(new AsyncInvocation(service, method, request, response, response_type, cb)),
+                   &uv_default_loop()->uv_eio_channel
+          );
         ev_ref(EV_DEFAULT_UC);
       }
 
