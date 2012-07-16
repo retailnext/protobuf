@@ -3,25 +3,16 @@ var assert = require('assert'),
     read = require('fs').readFileSync,
     Schema = require('../').Schema;
 
-/* hack to make the tests pass with node v0.3.0's new Buffer model */
-/* copied from http://github.com/bnoordhuis/node-iconv/blob/master/test.js */
-assert.bufferEqual = function(a, b, c) {
-	assert.equal(
-		a.inspect().replace(/^<SlowBuffer/, '<Buffer'),
-		b.inspect().replace(/^<SlowBuffer/, '<Buffer'),
-                c);
-};
-
 var T = new Schema(read('test/unittest.desc'))['protobuf_unittest.TestAllTypes'];
 assert.ok(T, 'type in schema');
 var golden = read('test/golden_message');
 var message = T.parse(golden);
 assert.ok(message, 'parses message');  // currently rather crashes
 
-assert.bufferEqual(T.serialize(message), golden, 'roundtrip');
+assert.deepEqual(T.serialize(message), golden, 'roundtrip');
 
 message.ignored = 42;
-assert.bufferEqual(T.serialize(message), golden, 'ignored field');
+assert.deepEqual(T.serialize(message), golden, 'ignored field');
 
 assert.throws(function() {
   T.parse(new Buffer('invalid'));
@@ -75,25 +66,25 @@ assert.throws(function() {
   });
 }, Error, 'Not an array');
 
-assert.bufferEqual(T.parse(
+assert.deepEqual(T.parse(
   T.serialize({
    optionalBytes: new Buffer('foo')
   })
 ).optionalBytes, new Buffer('foo'));
 
-assert.bufferEqual(T.parse(
+assert.deepEqual(T.parse(
   T.serialize({
    optionalBytes: 'foo'
   })
 ).optionalBytes, new Buffer('foo'));
 
-assert.bufferEqual(T.parse(
+assert.deepEqual(T.parse(
   T.serialize({
    optionalBytes: '\u20ac'
   })
 ).optionalBytes, new Buffer('\u00e2\u0082\u00ac', 'binary'));
 
-assert.bufferEqual(T.parse(
+assert.deepEqual(T.parse(
   T.serialize({
    optionalBytes: '\u0000'
   })
